@@ -2,6 +2,10 @@
 
 name: Generate Pacman Contribution Graph
 
+# Grant write access to repo contents so the action can push
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "0 0 * * *"      # every day at midnight UTC
@@ -11,10 +15,17 @@ jobs:
   generate:
     runs-on: ubuntu-latest
 
+    # Double‑check the job’s permissions too
+    permissions:
+      contents: write
+
     steps:
-      # 1. Check out your profile repo so git commands and file writes work
+      # 1. Check out your profile repo with credentials persisted
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # ensure the GITHUB_TOKEN is persisted for subsequent push
+          persist-credentials: true
 
       # 2. Ensure the output directory exists
       - name: Create output directory
@@ -35,5 +46,5 @@ jobs:
         with:
           add: 'output/*.svg'
           message: 'chore: update pacman contribution graph'
-          # use the default GitHub Actions bot identity
           default_author: github_actions
+          token: ${{ secrets.GITHUB_TOKEN }}
