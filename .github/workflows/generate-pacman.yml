@@ -1,15 +1,27 @@
+# File: .github/workflows/generate-pacman.yml
+
 name: Generate Pacman Contribution Graph
 
 on:
   schedule:
-    - cron: "0 0 * * *" # every day at 00:00 UTC
-  workflow_dispatch:
+    - cron: "0 0 * * *"      # every day at midnight UTC
+  workflow_dispatch:         # manual trigger
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Generate pacman graph
+      # 1. Check out your profile repo so git commands and file writes work
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Ensure the output directory exists
+      - name: Create output directory
+        run: mkdir -p output
+
+      # 3. Generate the SVGs
+      - name: Generate Pacman Graph
         uses: Platane/snk@v3
         with:
           github_user_name: RidaHajjAli
@@ -17,8 +29,11 @@ jobs:
             ./output/pacman-contribution-graph.svg
             ./output/pacman-contribution-graph-dark.svg
 
+      # 4. Commit & push any changes
       - name: Commit generated files
         uses: EndBug/add-and-commit@v9
         with:
-          add: output/
-          message: "chore: update pacman contribution graph"
+          add: 'output/*.svg'
+          message: 'chore: update pacman contribution graph'
+          # use the default GitHub Actions bot identity
+          default_author: github_actions
