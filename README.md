@@ -43,8 +43,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg?token=GHSAT0AAAAAAC4SLCMQ6VJZ6NHMNWG7IQKK2D3YZEQ">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg?token=GHSAT0AAAAAAC4SLCMQ6VJZ6NHMNWG7IQKK2D3YZEQ">
-    <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg?token=GHSAT0AAAAAAC4SLCMQ6VJZ6NHMNWG7IQKK2D3YZEQ" style="max-width: 100%;" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg>
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg">
+    <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/RidaHajjAli/RidaHajjAli/refs/heads/main/output/pacman-contribution-graph.svg" style="max-width: 100%;" />
   </picture>
 </p>
