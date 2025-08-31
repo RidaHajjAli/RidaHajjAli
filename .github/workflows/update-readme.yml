@@ -14,15 +14,15 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository's code
-      # The GITHUB_TOKEN is automatically used by this action for authentication
+      # Step 1: Check out the repository's code with full history
+      # The default shallow clone can cause issues with git operations.
+      # fetch-depth: 0 clones the entire history, ensuring git commands work reliably.
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Step 2: Modify the README file
-      # This is a safe example of modifying a file.
-      # WARNING: Never echo secrets directly into files as it is a major security risk.
-      # Your original step was embedding the GITHUB_TOKEN, which should be avoided.
       - name: Update timestamp in README
         run: |
           # This command finds a placeholder and replaces it with the current timestamp.
@@ -36,18 +36,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Pull the latest changes from the remote repository
-          # This is the key fix to prevent the 'exit code 128' error from non-fast-forward pushes
+          # First, check if there are any changes. Exit if none.
+          if git diff --quiet; then
+            echo "No changes to commit. Workflow finished successfully."
+            exit 0
+          fi
+
+          # Pull the latest changes from the remote repository to avoid conflicts
           git pull origin main --rebase
 
-          # Add the modified README file to the staging area
+          # Stage, commit, and push the changes with a retry mechanism
           git add README.md
+          git commit -m "Docs: Auto-update README with latest timestamp"
+          
+          echo "Attempting to push changes..."
+          for i in 1 2 3; do
+            git push origin main && break # If push succeeds, exit the loop
+            echo "Push attempt $i failed. Retrying in 10 seconds..."
+            sleep 10
+          done
 
-          # Commit the changes if there are any, otherwise exit gracefully
-          # Using 'git diff' is a more robust way to check for changes
-          if ! git diff --staged --quiet; then
-            git commit -m "Docs: Auto-update README with latest timestamp"
-            git push origin main
-          else
-            echo "No changes to commit."
-          fi
