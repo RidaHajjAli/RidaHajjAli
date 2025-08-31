@@ -14,45 +14,29 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository's code with full history
-      # The default shallow clone can cause issues with git operations.
-      # fetch-depth: 0 clones the entire history, ensuring git commands work reliably.
+      # Step 1: Check out the repository's code.
+      # The git-auto-commit-action needs access to the repo.
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       # Step 2: Modify the README file
+      # This step remains the same. We make our desired change to the file.
       - name: Update timestamp in README
         run: |
           # This command finds a placeholder and replaces it with the current timestamp.
           # Make sure you have a line like "Last updated: <!-- LAST_UPDATED -->" in your README.md
           sed -i "s/<!-- LAST_UPDATED -->/$(date)/g" README.md
 
-      # Step 3: Commit and push the changes
-      - name: Commit and push if there are changes
-        run: |
-          # Configure git with the bot's credentials
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # First, check if there are any changes. Exit if none.
-          if git diff --quiet; then
-            echo "No changes to commit. Workflow finished successfully."
-            exit 0
-          fi
-
-          # Pull the latest changes from the remote repository to avoid conflicts
-          git pull origin main --rebase
-
-          # Stage, commit, and push the changes with a retry mechanism
-          git add README.md
-          git commit -m "Docs: Auto-update README with latest timestamp"
-          
-          echo "Attempting to push changes..."
-          for i in 1 2 3; do
-            git push origin main && break # If push succeeds, exit the loop
-            echo "Push attempt $i failed. Retrying in 10 seconds..."
-            sleep 10
-          done
+      # Step 3: Commit and push the changes using a dedicated action
+      # Instead of manual git commands which can be brittle, this action is purpose-built
+      # for committing changes from within a workflow. It handles checking for changes,
+      # configuring git, committing, and pushing automatically.
+      - name: Commit and push updated README
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Docs: Auto-update README with latest timestamp"
+          # This specifies which file(s) to check for changes.
+          file_pattern: README.md
+          # Pushes directly to the main branch.
+          branch: main
 
