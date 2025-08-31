@@ -3,10 +3,25 @@
 
 ###
 
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=RidaHajjAli&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&theme=dracula&hide_border=true" height="150" alt="stats graph" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=RidaHajjAli&layout=compact&langs_count=8&theme=dracula&hide_border=true" height="150" alt="top langs" />
-</div>
+<a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
+    <p align="center">
+        <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=RidaHajjAli&theme=github_dark">
+        <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=RidaHajjAli&theme=github_dark&utcOffset=3">
+        <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=RidaHajjAli&theme=github_dark">
+</a>
+
+<p align="center">
+    <a href="https://wakatime.com/@RidaHajjAli">
+      <img src="https://wakatime.com/badge/user/847d9477-bdf4-4be9-9660-993eb1665dc7.svg">
+    </a>
+    <a href="https://github.com/antonkomarev/github-profile-views-counter">
+      <img src="https://komarev.com/ghpvc/?username=RidaHajjAli&style=flat-square&label=Views"/>
+    </a>
+    <a href="https://yhype.me/">
+      <img src="https://hit.yhype.me/github/profile?user_id=4661021"/>
+    </a>
+</p>
+
 
 ###
 
