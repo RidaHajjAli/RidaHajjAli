@@ -1,37 +1,53 @@
-name: Update GitHub Stats
+name: Update README
 
 on:
   schedule:
-    - cron: '0 * * * *' # runs every hour
+    # Runs every hour at the top of the hour
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write   # allow writing to the repo
+  # This permission is essential for the action to be able to push code
+  contents: write
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: main   # make sure we are on main branch
+      # Step 1: Check out the repository's code
+      # The GITHUB_TOKEN is automatically used by this action for authentication
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Debug token access
+      # Step 2: Modify the README file
+      # This is a safe example of modifying a file.
+      # WARNING: Never echo secrets directly into files as it is a major security risk.
+      # Your original step was embedding the GITHUB_TOKEN, which should be avoided.
+      - name: Update timestamp in README
         run: |
-          echo "Testing auth against repository..."
-          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD
+          # This command finds a placeholder and replaces it with the current timestamp.
+          # Make sure you have a line like "Last updated: <!-- LAST_UPDATED -->" in your README.md
+          sed -i "s/<!-- LAST_UPDATED -->/$(date)/g" README.md
 
-      - name: Replace token in README
+      # Step 3: Commit and push the changes
+      - name: Commit and push if there are changes
         run: |
-          sed -i "s/TOKEN_PLACEHOLDER/${{ secrets.GITHUB_TOKEN }}/g" README.md
-
-      - name: Commit and push updates
-        run: |
+          # Configure git with the bot's credentials
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Pull the latest changes from the remote repository
+          # This is the key fix to prevent the 'exit code 128' error from non-fast-forward pushes
+          git pull origin main --rebase
+
+          # Add the modified README file to the staging area
           git add README.md
-          git commit -m "Update GitHub stats" || exit 0
-          # Ensure push uses the token
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin main
+
+          # Commit the changes if there are any, otherwise exit gracefully
+          # Using 'git diff' is a more robust way to check for changes
+          if ! git diff --staged --quiet; then
+            git commit -m "Docs: Auto-update README with latest timestamp"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
