@@ -5,13 +5,22 @@ on:
     - cron: '0 * * * *' # runs every hour
   workflow_dispatch:
 
+permissions:
+  contents: write   # allow writing to the repo
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # ensure push access
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main   # make sure we are on main branch
+
+      - name: Debug token access
+        run: |
+          echo "Testing auth against repository..."
+          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD
 
       - name: Replace token in README
         run: |
@@ -22,5 +31,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "Update GitHub stats" || echo "No changes to commit"
+          git commit -m "Update GitHub stats" || exit 0
+          # Ensure push uses the token
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin main
