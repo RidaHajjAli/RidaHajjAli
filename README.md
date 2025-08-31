@@ -22,6 +22,7 @@
   <img src="https://skillicons.dev/icons?i=vscode" height="30" alt="vscode" />
   <img src="https://skillicons.dev/icons?i=git" height="30" alt="git" />
   <img src="https://skillicons.dev/icons?i=github" height="30" alt="github" />
+  <img src="https://img.icons8.com/?size=100&id=lOqoeP2Zy02f&format=png&color=000000" height="30" alt="google-Collab" />
   <img src="https://img.icons8.com/ios-filled/50/000000/artificial-intelligence.png" height="30" alt="AI logo" />
   <img src="https://static.thenounproject.com/png/chatbot-icon-852157-512.png" height="30" alt="chatbot logo" />
   <img src="https://img.icons8.com/ios-filled/50/database.png" height="30" alt="RAG logo" />
@@ -37,9 +38,6 @@
     <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/medium.svg" width="42" height="30" alt="medium logo" />
   </a>
 </div>
-
-
-<h3 align="center">🎮 Fun Touch: My Contribution Graph as Pac-Man</h3>
 
 <p align="center">
   <picture>
